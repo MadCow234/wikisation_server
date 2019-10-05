@@ -3,7 +3,7 @@ package com.madcow234.wikisation_server.auth
 import grails.gorm.services.Service
 
 @Service(User)
-interface UserDataService {
+interface UserService {
     Integer countByUsername(String username)
 
     Integer countByEmail(String email)

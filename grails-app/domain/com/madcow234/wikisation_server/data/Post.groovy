@@ -1,14 +1,14 @@
 package com.madcow234.wikisation_server.data
 
 import com.madcow234.wikisation_server.auth.User
-import com.madcow234.wikisation_server.auth.UserDataService
+import com.madcow234.wikisation_server.auth.UserService
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.userdetails.GrailsUser
 
 class Post {
 
     transient SpringSecurityService springSecurityService
-    transient UserDataService userDataService
+    transient UserService userService
 
     static hasMany = [postHistory: PostHistory]
 
@@ -38,11 +38,11 @@ class Post {
         charactersUsed = message.length()
 
         // Retrieve the User that submitted the Post
-        User user = userDataService.find((springSecurityService.principal as GrailsUser).username)
+        User user = userService.find((springSecurityService.principal as GrailsUser).username)
 
         // Remove characters from User's character pool
-        userDataService.updateCharacterPool(user.id, user.availableCharacters - charactersUsed)
-        userDataService.updateLastActivityDate(user.id, new Date())
+        userService.updateCharacterPool(user.id, user.availableCharacters - charactersUsed)
+        userService.updateLastActivityDate(user.id, new Date())
 
         // Set the User as the last editor of the Post
         lastEditor = user
@@ -57,7 +57,7 @@ class Post {
         // TODO if user has enough characters
 
         // Get the User that edited this Post
-        User currentUser = userDataService.find((springSecurityService.principal as GrailsUser).username)
+        User currentUser = userService.find((springSecurityService.principal as GrailsUser).username)
 
         // Retrieve the previous information of the Post
         Post originalPost = this
@@ -85,8 +85,8 @@ class Post {
 
         // Update the character pool of the User that edited the Post
         User.withNewSession {
-            userDataService.updateCharacterPool(currentUser.id, newUserCharPool)
-            userDataService.updateLastActivityDate(currentUser.id, new Date())
+            userService.updateCharacterPool(currentUser.id, newUserCharPool)
+            userService.updateLastActivityDate(currentUser.id, new Date())
         }
 
         // Set this User as the last editor of the Post

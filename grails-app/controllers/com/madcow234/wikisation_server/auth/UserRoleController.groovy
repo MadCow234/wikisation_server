@@ -5,18 +5,18 @@ import static org.springframework.http.HttpStatus.*
 
 class UserRoleController {
 
-    UserRoleDataService userRoleDataService
+    UserRoleService userRoleService
 
     static responseFormats = ['json', 'xml']
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond userRoleDataService.list(params), model:[userRoleCount: userRoleDataService.count()]
+        respond userRoleService.list(params), model:[userRoleCount: userRoleService.count()]
     }
 
     def show(Long id) {
-        respond userRoleDataService.get(id)
+        respond userRoleService.get(id)
     }
 
     def save(UserRole userRole) {
@@ -26,7 +26,7 @@ class UserRoleController {
         }
 
         try {
-            userRoleDataService.save(userRole)
+            userRoleService.save(userRole)
         } catch (ValidationException e) {
             respond userRole.errors, view:'create'
             return
@@ -42,7 +42,7 @@ class UserRoleController {
         }
 
         try {
-            userRoleDataService.save(userRole)
+            userRoleService.save(userRole)
         } catch (ValidationException e) {
             respond userRole.errors, view:'edit'
             return
@@ -57,7 +57,7 @@ class UserRoleController {
             return
         }
 
-        userRoleDataService.delete(id)
+        userRoleService.delete(id)
 
         render status: NO_CONTENT
     }

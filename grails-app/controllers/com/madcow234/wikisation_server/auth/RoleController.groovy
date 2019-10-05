@@ -5,18 +5,18 @@ import static org.springframework.http.HttpStatus.*
 
 class RoleController {
 
-    RoleDataService roleDataService
+    RoleService roleService
 
     static responseFormats = ['json', 'xml']
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond roleDataService.list(params), model:[roleCount: roleDataService.count()]
+        respond roleService.list(params), model:[roleCount: roleService.count()]
     }
 
     def show(Long id) {
-        respond roleDataService.get(id)
+        respond roleService.get(id)
     }
 
     def save(Role role) {
@@ -26,7 +26,7 @@ class RoleController {
         }
 
         try {
-            roleDataService.save(role)
+            roleService.save(role)
         } catch (ValidationException e) {
             respond role.errors, view:'create'
             return
@@ -42,7 +42,7 @@ class RoleController {
         }
 
         try {
-            roleDataService.save(role)
+            roleService.save(role)
         } catch (ValidationException e) {
             respond role.errors, view:'edit'
             return
@@ -57,7 +57,7 @@ class RoleController {
             return
         }
 
-        roleDataService.delete(id)
+        roleService.delete(id)
 
         render status: NO_CONTENT
     }

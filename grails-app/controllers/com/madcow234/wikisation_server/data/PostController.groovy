@@ -5,18 +5,18 @@ import static org.springframework.http.HttpStatus.*
 
 class PostController {
 
-    PostDataService postDataService
+    PostService postService
 
     static responseFormats = ['json', 'xml']
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond postDataService.list(params), model:[postCount: postDataService.count()]
+        respond postService.list(params), model:[postCount: postService.count()]
     }
 
     def show(Long id) {
-        respond postDataService.get(id)
+        respond postService.get(id)
     }
 
     def save(Post post) {
@@ -26,7 +26,7 @@ class PostController {
         }
 
         try {
-            postDataService.save(post)
+            postService.save(post)
         } catch (ValidationException e) {
             respond post.errors, view:'create'
             return
@@ -42,7 +42,7 @@ class PostController {
         }
 
         try {
-            postDataService.save(post)
+            postService.save(post)
         } catch (ValidationException e) {
             respond post.errors, view:'edit'
             return
@@ -57,7 +57,7 @@ class PostController {
             return
         }
 
-        postDataService.delete(id)
+        postService.delete(id)
 
         render status: NO_CONTENT
     }

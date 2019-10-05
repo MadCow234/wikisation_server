@@ -3,19 +3,19 @@ package com.madcow234.wikisation_server
 import com.madcow234.wikisation_server.auth.Role
 import com.madcow234.wikisation_server.auth.User
 import com.madcow234.wikisation_server.auth.UserRole
-import com.madcow234.wikisation_server.auth.UserDataService
+import com.madcow234.wikisation_server.auth.UserService
 import grails.validation.ValidationException
 import grails.gorm.transactions.Transactional
 
 @Transactional
 class RegistrationService {
 
-    UserDataService userDataService
+    UserService userService
 
     User registerNewUser(User user) throws ValidationException {
         log.info("Registering new user. Username: $user.username")
 
-        User registeredUser = userDataService.save(
+        User registeredUser = userService.save(
                 new User(
                         username: user.username,
                         email: user.email,
@@ -41,10 +41,10 @@ class RegistrationService {
     }
 
     Boolean isUsernameAvailable(String username) {
-        return userDataService.countByUsername(username) == 0
+        return userService.countByUsername(username) == 0
     }
 
     Boolean isEmailAvailable(String email) {
-        return userDataService.countByEmail(email) == 0
+        return userService.countByEmail(email) == 0
     }
 }

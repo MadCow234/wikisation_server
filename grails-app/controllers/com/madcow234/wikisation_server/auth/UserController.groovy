@@ -7,7 +7,7 @@ import static org.springframework.http.HttpStatus.*
 
 class UserController {
 
-    UserDataService userDataService
+    UserService userService
     SpringSecurityService springSecurityService
 
     static responseFormats = ['json', 'xml']
@@ -15,11 +15,11 @@ class UserController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond userDataService.list(params), model:[userCount: userDataService.count()]
+        respond userService.list(params), model:[userCount: userService.count()]
     }
 
     def show(Long id) {
-        respond userDataService.get(id)
+        respond userService.get(id)
     }
 
     def save(User user) {
@@ -29,7 +29,7 @@ class UserController {
         }
 
         try {
-            userDataService.save(user)
+            userService.save(user)
         } catch (ValidationException e) {
             respond user.errors, view:'create'
             return
@@ -45,7 +45,7 @@ class UserController {
         }
 
         try {
-            userDataService.save(user)
+            userService.save(user)
         } catch (ValidationException e) {
             respond user.errors, view:'edit'
             return
@@ -60,15 +60,15 @@ class UserController {
             return
         }
 
-        userDataService.delete(id)
+        userService.delete(id)
 
         render status: NO_CONTENT
     }
 
     def updateCharacterPool() {
-        User user = userDataService.find((springSecurityService.principal as GrailsUser).username)
-        userDataService.updateCharacterPool(user.id, user.availableCharacters)
-        userDataService.updateLastActivityDate(user.id, new Date())
+        User user = userService.find((springSecurityService.principal as GrailsUser).username)
+        userService.updateCharacterPool(user.id, user.availableCharacters)
+        userService.updateLastActivityDate(user.id, new Date())
 
         respond user, [status: OK, view:"show"]
     }

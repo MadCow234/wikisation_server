@@ -3,7 +3,7 @@ package com.madcow234.wikisation_server.auth
 import grails.gorm.services.Service
 
 @Service(Role)
-interface RoleDataService {
+interface RoleService {
 
     Role get(Serializable id)
 

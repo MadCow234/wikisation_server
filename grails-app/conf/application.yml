@@ -1,0 +1,179 @@
+---
+grails:
+    views:
+        json:
+            compileStatic: false
+    cors:
+        enabled: true
+        allowedOrigins:
+            - https://wikisation.localtunnel.me
+            - http://localhost:3000
+        allowedHeaders:
+            - Accept
+            - Content-Type
+    profile: rest-api
+    codegen:
+        defaultPackage: com.madcow234.wikisation_server
+    gorm:
+        reactor:
+            # Whether to translate GORM events into Reactor events
+            # Disabled by default for performance reasons
+            events: false
+    plugin:
+        springsecurity:
+            rejectIfNoRule: true
+            rejectPublicInvocations: false
+            securityConfigType: InterceptUrlMap
+            userLookup:
+                userDomainClassName: com.madcow234.wikisation_server.auth.User
+                authorityJoinClassName: com.madcow234.wikisation_server.auth.UserRole
+            authority:
+                className: com.madcow234.wikisation_server.auth.Role
+            rest:
+                login:
+                    endpointUrl: /login
+                token:
+                    validation:
+                        endpointUrl: /token/validate
+                    storage:
+                        jwt:
+                            secret: Th!sIsAr3aLlYl0nGsUp3rAw3s0m3S3cR37
+                            expiration: 3600
+            interceptUrlMap:
+                - pattern: '/'
+                  access: ['permitAll']
+                - pattern: '/checkUsername'
+                  access: ['permitAll']
+                - pattern: '/checkEmail'
+                  access: ['permitAll']
+                - pattern: '/register'
+                  access: ['permitAll']
+                - pattern: '/admin/**'
+                  access: ['ROLE_ADMIN']
+                - pattern: '/**'
+                  access: ['ROLE_USER', 'ROLE_ADMIN']
+            filterChain:
+                chainMap:
+                    - pattern: '/assets/**'
+                      filters: 'none'
+                    - pattern: '/**/js/**'
+                      filters: 'none'
+                    - pattern: '/**/css/**'
+                      filters: 'none'
+                    - pattern: '/**/images/**'
+                      filters: 'none'
+                    - pattern: '/**/favicon.ico'
+                      filters: 'none'
+                    - pattern: '/'
+                      filters: 'none'
+                    - pattern: '/checkUsername'
+                      filters: 'none'
+                    - pattern: '/checkEmail'
+                      filters: 'none'
+                    - pattern: '/register'
+                      filters: 'none'
+                    - pattern: '/**'
+                      filters: 'JOINED_FILTERS,-anonymousAuthenticationFilter,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-rememberMeAuthenticationFilter'
+
+info:
+    app:
+        name: '@info.app.name@'
+        version: '@info.app.version@'
+        grailsVersion: '@info.app.grailsVersion@'
+spring:
+    main:
+        banner-mode: "off"
+    groovy:
+        template:
+            check-template-location: false
+
+# Spring Actuator Endpoints are Disabled by Default
+endpoints:
+    enabled: false
+    jmx:
+        enabled: true
+
+---
+grails:
+    mime:
+        disable:
+            accept:
+                header:
+                    userAgents:
+                        - Gecko
+                        - WebKit
+                        - Presto
+                        - Trident
+        types:
+            json:
+              - application/json
+              - text/json   
+            hal:
+              - application/hal+json
+              - application/hal+xml  
+            xml:
+              - text/xml
+              - application/xml                                 
+            atom: application/atom+xml
+            css: text/css
+            csv: text/csv
+            js: text/javascript
+            rss: application/rss+xml
+            text: text/plain
+            all: '*/*'            
+    urlmapping:
+        cache:
+            maxsize: 1000
+    controllers:
+        defaultScope: singleton
+    converters:
+        encoding: UTF-8
+
+---
+hibernate:
+    cache:
+        queries: true
+        use_second_level_cache: true
+        use_query_cache: false
+
+dataSource:
+    pooled: true
+    jmxExport: true
+    username: sa
+    password: ''
+
+environments:
+    development:
+        dataSource:
+            dbCreate: update
+            dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+            driverClassName: com.mysql.cj.jdbc.Driver
+            url: jdbc:mysql://localhost:3306/wikifeed
+            username: wikifeed
+            password: wikifeed
+    test:
+        dataSource:
+            dbCreate: update
+            url: jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+    production:
+        dataSource:
+            dbCreate: none
+            url: jdbc:h2:./prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+            properties:
+                jmxEnabled: true
+                initialSize: 5
+                maxActive: 50
+                minIdle: 5
+                maxIdle: 25
+                maxWait: 10000
+                maxAge: 600000
+                timeBetweenEvictionRunsMillis: 5000
+                minEvictableIdleTimeMillis: 60000
+                validationQuery: SELECT 1
+                validationQueryTimeout: 3
+                validationInterval: 15000
+                testOnBorrow: true
+                testWhileIdle: true
+                testOnReturn: false
+                jdbcInterceptors: ConnectionState
+                defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED

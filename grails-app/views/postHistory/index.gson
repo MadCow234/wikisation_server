@@ -1,0 +1,8 @@
+import com.madcow234.wikisation_server.data.PostHistory
+
+model {
+	Iterable<PostHistory> postHistoryList
+}
+
+json tmpl.postHistory(postHistoryList ?: [])
+

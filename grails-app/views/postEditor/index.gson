@@ -1,0 +1,8 @@
+import com.madcow234.wikisation_server.data.PostEditor
+
+model {
+	Iterable<PostEditor> postEditorList
+}
+
+json tmpl.postEditor(postEditorList ?: [])
+

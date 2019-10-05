@@ -1,0 +1,7 @@
+import com.madcow234.wikisation_server.data.PostHistory
+
+model {
+	PostHistory postHistory
+}
+
+json tmpl.postHistory(postHistory)

@@ -1,0 +1,20 @@
+import com.madcow234.wikisation_server.data.Post
+import com.madcow234.wikisation_server.data.PostHistory
+
+model {
+	Post post
+}
+
+json {
+	id post.id
+	message post.message
+	charactersUsed post.charactersUsed
+	lastEditor post.lastEditor.username
+	editors post.getEditors()*.username
+	history !post.postHistory ? [] : post.postHistory.toList(), { PostHistory previousPost ->
+		id previousPost.id
+		message previousPost.message
+		charactersUsed previousPost.charactersUsed
+		editor previousPost.editor.username
+	}
+}

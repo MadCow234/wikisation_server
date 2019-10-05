@@ -1,0 +1,7 @@
+import com.madcow234.wikisation_server.data.PostEditor
+
+model {
+	PostEditor postEditor
+}
+
+json g.render(postEditor, [resolveTemplate: false])

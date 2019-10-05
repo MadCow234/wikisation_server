@@ -1,0 +1,71 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+GET {{host}}
+
+###
+
+POST {{host}}/register?username=MadCow234&email=MadCow234@gmail.com&password=password
+
+###
+
+POST {{host}}/login
+Content-Type: application/json
+
+{
+  "username": "MadCow234",
+  "password": "password"
+}
+
+> {% client.global.set("access_token", response.body.access_token); %}
+
+###
+
+GET {{host}}/admin/users
+Authorization: Bearer {{access_token}}
+
+###
+
+PUT {{host}}/admin/users/updateCharacterPool
+Authorization: Bearer {{access_token}}
+
+###
+
+GET {{host}}/admin/roles
+Authorization: Bearer {{access_token}}
+
+###
+
+GET {{host}}/token/validate
+Authorization: Bearer {{access_token}}
+
+###
+
+GET {{host}}/post
+Authorization: Bearer {{access_token}}
+
+###
+
+POST {{host}}/post
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "message": "i am a xcvcxzcxz zcxvsdfdsf dsfdsf fdsf dsf sf dfdsf fdsf dsf df f dsf df sdfdsf df sdafpost"
+}
+
+###
+
+PUT {{host}}/post/2
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "message": "i am another edited post"
+}
+
+###

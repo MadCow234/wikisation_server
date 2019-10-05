@@ -1,0 +1,8 @@
+import com.madcow234.wikisation_server.data.Post
+
+model {
+	Iterable<Post> postList
+}
+
+json tmpl.post(postList ?: [])
+

@@ -7,9 +7,9 @@ import org.hibernate.SessionFactory
 
 @Integration
 @Rollback
-class PostEditorServiceSpec extends Specification {
+class PostEditorDataServiceSpec extends Specification {
 
-    PostEditorService postEditorService
+    PostEditorDataService postEditorService
     SessionFactory sessionFactory
 
     private Long setupData() {

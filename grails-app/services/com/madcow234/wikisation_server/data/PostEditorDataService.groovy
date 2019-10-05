@@ -3,7 +3,7 @@ package com.madcow234.wikisation_server.data
 import grails.gorm.services.Service
 
 @Service(PostEditor)
-interface PostEditorService {
+interface PostEditorDataService {
 
     PostEditor get(Serializable id)
 

@@ -18,7 +18,7 @@ class PostEditorControllerSpec extends Specification implements ControllerUnitTe
 
     void "Test the index action returns the correct response"() {
         given:
-        controller.postEditorService = Mock(PostEditorService) {
+        controller.postEditorDataService = Mock(PostEditorDataService) {
             1 * list(_) >> []
             1 * count() >> 0
         }
@@ -43,7 +43,7 @@ class PostEditorControllerSpec extends Specification implements ControllerUnitTe
 
     void "Test the save action correctly persists"() {
         given:
-        controller.postEditorService = Mock(PostEditorService) {
+        controller.postEditorDataService = Mock(PostEditorDataService) {
             1 * save(_ as PostEditor)
         }
 
@@ -64,7 +64,7 @@ class PostEditorControllerSpec extends Specification implements ControllerUnitTe
 
     void "Test the save action with an invalid instance"() {
         given:
-        controller.postEditorService = Mock(PostEditorService) {
+        controller.postEditorDataService = Mock(PostEditorDataService) {
             1 * save(_ as PostEditor) >> { PostEditor postEditor ->
                 throw new ValidationException("Invalid instance", postEditor.errors)
             }
@@ -84,7 +84,7 @@ class PostEditorControllerSpec extends Specification implements ControllerUnitTe
 
     void "Test the show action with a null id"() {
         given:
-        controller.postEditorService = Mock(PostEditorService) {
+        controller.postEditorDataService = Mock(PostEditorDataService) {
             1 * get(null) >> null
         }
 
@@ -97,7 +97,7 @@ class PostEditorControllerSpec extends Specification implements ControllerUnitTe
 
     void "Test the show action with a valid id"() {
         given:
-        controller.postEditorService = Mock(PostEditorService) {
+        controller.postEditorDataService = Mock(PostEditorDataService) {
             1 * get(2) >> new PostEditor()
         }
 
@@ -121,7 +121,7 @@ class PostEditorControllerSpec extends Specification implements ControllerUnitTe
 
     void "Test the update action correctly persists"() {
         given:
-        controller.postEditorService = Mock(PostEditorService) {
+        controller.postEditorDataService = Mock(PostEditorDataService) {
             1 * save(_ as PostEditor)
         }
 
@@ -142,7 +142,7 @@ class PostEditorControllerSpec extends Specification implements ControllerUnitTe
 
     void "Test the update action with an invalid instance"() {
         given:
-        controller.postEditorService = Mock(PostEditorService) {
+        controller.postEditorDataService = Mock(PostEditorDataService) {
             1 * save(_ as PostEditor) >> { PostEditor postEditor ->
                 throw new ValidationException("Invalid instance", postEditor.errors)
             }
@@ -172,7 +172,7 @@ class PostEditorControllerSpec extends Specification implements ControllerUnitTe
 
     void "Test the delete action with an instance"() {
         given:
-        controller.postEditorService = Mock(PostEditorService) {
+        controller.postEditorDataService = Mock(PostEditorDataService) {
             1 * delete(2)
         }
 

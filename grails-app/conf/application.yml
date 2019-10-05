@@ -39,59 +39,33 @@ grails:
                         jwt:
                             secret: Th!sIsAr3aLlYl0nGsUp3rAw3s0m3S3cR37
                             expiration: 3600
-            interceptUrlMap:
-                - pattern: '/'
-                  access: ['permitAll']
-                - pattern: '/checkUsername'
-                  access: ['permitAll']
-                - pattern: '/checkEmail'
-                  access: ['permitAll']
-                - pattern: '/register'
-                  access: ['permitAll']
-                - pattern: '/admin/**'
-                  access: ['ROLE_ADMIN']
-                - pattern: '/**'
-                  access: ['ROLE_USER', 'ROLE_ADMIN']
-            filterChain:
-                chainMap:
-                    - pattern: '/assets/**'
-                      filters: 'none'
-                    - pattern: '/**/js/**'
-                      filters: 'none'
-                    - pattern: '/**/css/**'
-                      filters: 'none'
-                    - pattern: '/**/images/**'
-                      filters: 'none'
-                    - pattern: '/**/favicon.ico'
-                      filters: 'none'
-                    - pattern: '/'
-                      filters: 'none'
-                    - pattern: '/checkUsername'
-                      filters: 'none'
-                    - pattern: '/checkEmail'
-                      filters: 'none'
-                    - pattern: '/register'
-                      filters: 'none'
-                    - pattern: '/**'
-                      filters: 'JOINED_FILTERS,-anonymousAuthenticationFilter,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-rememberMeAuthenticationFilter'
-
 info:
     app:
         name: '@info.app.name@'
         version: '@info.app.version@'
         grailsVersion: '@info.app.grailsVersion@'
 spring:
+    jmx:
+        unique-names: true
     main:
         banner-mode: "off"
     groovy:
         template:
             check-template-location: false
+    devtools:
+        restart:
+            additional-exclude:
+                - '*.gsp'
+                - '**/*.gsp'
+                - '*.gson'
+                - '**/*.gson'
+                - 'logback.groovy'
+                - '*.properties'
 
 # Spring Actuator Endpoints are Disabled by Default
-endpoints:
-    enabled: false
-    jmx:
-        enabled: true
+management:
+    endpoints:
+        enabled-by-default: false
 
 ---
 grails:
@@ -132,8 +106,8 @@ grails:
 ---
 hibernate:
     cache:
-        queries: true
-        use_second_level_cache: true
+        queries: false
+        use_second_level_cache: false
         use_query_cache: false
 
 dataSource:
